@@ -114,7 +114,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('menu_image.png');
+            background: linear-gradient(rgba(44, 62, 80, 0.8), rgba(44, 62, 80, 0.8)), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%231e3d22"/><path d="M0,100 Q25,50 50,100 T100,100" fill="%23142e18" opacity="0.3"/></svg>');
             background-size: cover;
             background-position: center;
             background-color: #2c3e50;
@@ -623,27 +623,20 @@
     let savedPauseTime = 0; 
     let pauseOffsetTotal = 0; 
 
-    // --- АУДИОФАЙЛЫ ---
-    const audioMenu = new Audio('Menu_Sound.mp3'); audioMenu.loop = true;
-    const audioPlay = new Audio('Play_Sound.mp3'); audioPlay.loop = true;
-    const audioPosadka = new Audio('posadka.mp3');
-    const audioCooldownNotReady = new Audio('cooldown.mp3');
-    const audioLopata = new Audio('lopata.mp3');
+    // --- АУДИОЗАГЛУШКИ ДЛЯСТАБИЛЬНОСТИБЕЗ ФАЙЛОВ ---
+    const audioMenu = { play: function(){ return Promise.resolve(); }, pause: function(){} };
+    const audioPlay = { play: function(){ return Promise.resolve(); }, pause: function(){} };
+    const audioPosadka = { play: function(){ return Promise.resolve(); }, currentTime: 0 };
+    const audioCooldownNotReady = { play: function(){ return Promise.resolve(); }, currentTime: 0 };
+    const audioLopata = { play: function(){ return Promise.resolve(); }, currentTime: 0 };
 
-    function playMenuMusic() {
-        audioPlay.pause(); audioPlay.currentTime = 0;
-        audioMenu.play().catch(err => console.log("Музыка меню заблокирована:", err));
-    }
-
-    function playPlayMusic() {
-        audioMenu.pause(); audioMenu.currentTime = 0;
-        audioPlay.play().catch(err => console.log("Игровая музыка заблокирована:", err));
-    }
+    function playMenuMusic() {}
+    function playPlayMusic() {}
 
     // --- ЗАГРУЗКА ---
     let progress = 0;
     let loadInterval = setInterval(() => {
-        progress += Math.random() * 4 + 1;
+        progress += Math.random() * 8 + 4;
         if (progress >= 100) {
             progress = 100;
             clearInterval(loadInterval);
@@ -663,30 +656,30 @@
         playMenuMusic();
     });
 
-    // --- ТЕКСТУРЫ ---
-    const imgPeashooter = new Image(); imgPeashooter.src = 'goroxostrel.png';
-    const imgSunflower = new Image(); imgSunflower.src = 'podsolnyx.png';
-    const imgZombie = new Image(); imgZombie.src = 'zombi-one-part.png';
-    const imgZombieBucket = new Image(); imgZombieBucket.src = 'zombi_backet.png';
-    const imgZombieCone = new Image(); imgZombieCone.src = 'zombi_konys.png';
-    const imgWallnut = new Image(); imgWallnut.src = 'orex.png';
-    const imgSunFile = new Image(); imgSunFile.src = 'solnishko.png';
-    const imgCherry = new Image(); imgCherry.src = 'vishna.png';
-    const imgBoom = new Image(); imgBoom.src = 'BOOM.png';
-    const imgMineUnder = new Image(); imgMineUnder.src = 'kartoshka_zemla.png';
-    const imgMineReady = new Image(); imgMineReady.src = 'kartoshka.png';
+    // --- ИСПРАВЛЕННЫЕ СТРОКИ: ВСТРОЕННЫЕ SVG-ТЕКСТУРЫ ВМЕСТО ВНЕШНИХ ФАЙЛОВ ---
+    const imgPeashooter = new Image(); imgPeashooter.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="35" fill="%232ecc71"/><circle cx="50" cy="50" r="25" fill="%2327ae60"/><circle cx="75" cy="50" r="12" fill="%232ecc71"/><circle cx="77" cy="50" r="6" fill="%23111"/><circle cx="45" cy="40" r="5" fill="%23fff"/><circle cx="60" cy="40" r="5" fill="%23fff"/><circle cx="45" cy="40" r="2" fill="%23000"/><circle cx="60" cy="40" r="2" fill="%23000"/></svg>';
+    const imgSunflower = new Image(); imgSunflower.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="22" fill="%23e67e22"/><path d="M50,10 Q55,30 50,40 Q45,30 50,10 Z" fill="%23f1c40f" transform="rotate(0 50 50)"/><path d="M50,10 Q55,30 50,40 Q45,30 50,10 Z" fill="%23f1c40f" transform="rotate(45 50 50)"/><path d="M50,10 Q55,30 50,40 Q45,30 50,10 Z" fill="%23f1c40f" transform="rotate(90 50 50)"/><path d="M50,10 Q55,30 50,40 Q45,30 50,10 Z" fill="%23f1c40f" transform="rotate(135 50 50)"/><path d="M50,10 Q55,30 50,40 Q45,30 50,10 Z" fill="%23f1c40f" transform="rotate(180 50 50)"/><path d="M50,10 Q55,30 50,40 Q45,30 50,10 Z" fill="%23f1c40f" transform="rotate(225 50 50)"/><path d="M50,10 Q55,30 50,40 Q45,30 50,10 Z" fill="%23f1c40f" transform="rotate(270 50 50)"/><path d="M50,10 Q55,30 50,40 Q45,30 50,10 Z" fill="%23f1c40f" transform="rotate(315 50 50)"/><circle cx="50" cy="50" r="20" fill="%23d35400"/><circle cx="43" cy="45" r="3" fill="%23000"/><circle cx="57" cy="45" r="3" fill="%23000"/><path d="M40,60 Q50,70 60,60" stroke="%23000" stroke-width="3" fill="none"/></svg>';
+    const imgZombie = new Image(); imgZombie.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="35" r="20" fill="%2395a5a6"/><rect x="40" y="55" width="20" height="40" fill="%237f8c8d"/><circle cx="45" cy="30" r="6" fill="%23fff"/><circle cx="55" cy="32" r="4" fill="%23fff"/><circle cx="45" cy="30" r="2" fill="%23000"/><circle cx="55" cy="32" r="2" fill="%23000"/><path d="M42,46 Q50,40 58,48" stroke="%23555" stroke-width="2" fill="none"/></svg>';
+    const imgZombieBucket = new Image(); imgZombieBucket.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="40" r="18" fill="%2395a5a6"/><path d="M30,30 L70,30 L65,10 L35,10 Z" fill="%237f8c8d" stroke="%2334495e" stroke-width="2"/><rect x="42" y="58" width="16" height="35" fill="%237f8c8d"/><circle cx="46" cy="36" r="4" fill="%23fff"/><circle cx="54" cy="37" r="3" fill="%23fff"/><circle cx="46" cy="36" r="2" fill="%23000"/><circle cx="54" cy="37" r="1.5" fill="%23000"/></svg>';
+    const imgZombieCone = new Image(); imgZombieCone.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="42" r="18" fill="%2395a5a6"/><path d="M50,5 L25,35 L75,35 Z" fill="%23e67e22" stroke="%23d35400" stroke-width="2"/><rect x="42" y="60" width="16" height="35" fill="%237f8c8d"/><circle cx="46" cy="39" r="4" fill="%23fff"/><circle cx="54" cy="40" r="3" fill="%23fff"/><circle cx="46" cy="39" r="2" fill="%23000"/><circle cx="54" cy="40" r="1.5" fill="%23000"/></svg>';
+    const imgWallnut = new Image(); imgWallnut.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><ellipse cx="50" cy="50" rx="30" ry="40" fill="%23e67e22"/><ellipse cx="50" cy="50" rx="26" ry="36" fill="%23d35400"/><circle cx="42" cy="40" r="7" fill="%23fff"/><circle cx="58" cy="40" r="7" fill="%23fff"/><circle cx="42" cy="40" r="3" fill="%23000"/><circle cx="58" cy="40" r="3" fill="%23000"/><path d="M40,25 Q50,30 60,25" stroke="%23ba4a00" stroke-width="3" fill="none"/><path d="M42,65 Q50,60 58,65" stroke="%23111" stroke-width="3" fill="none"/></svg>';
+    const imgSunFile = new Image(); imgSunFile.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="28" fill="%23f1c40f" stroke="%23f39c12" stroke-width="3"/><circle cx="50" cy="50" r="20" fill="%23ffd700"/><path d="M50,5 L50,20 M50,80 L50,95 M5,50 L20,50 M80,50 L95,50 M18,18 L29,29 M71,71 L82,82 M18,82 L29,71 M71,18 L82,29" stroke="%23f39c12" stroke-width="5" stroke-linecap="round"/></svg>';
+    const imgCherry = new Image(); imgCherry.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M35,50 Q50,20 65,35" stroke="%2327ae60" stroke-width="4" fill="none"/><circle cx="32" cy="62" r="18" fill="%23e74c3c"/><circle cx="68" cy="58" r="16" fill="%23c0392b"/><circle cx="26" cy="55" r="4" fill="%23fff" opacity="0.7"/><circle cx="64" cy="52" r="3" fill="%23fff" opacity="0.7"/></svg>';
+    const imgBoom = new Image(); imgBoom.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50,5 L60,30 L90,20 L75,45 L95,65 L65,70 L70,95 L50,80 L30,95 L35,70 L5,65 L25,45 L10,20 L40,30 Z" fill="%23e67e22" stroke="%23e74c3c" stroke-width="3"/><path d="M50,20 L55,38 L78,30 L67,48 L83,62 L60,65 L62,82 L50,72 L38,82 L40,65 L17,62 L33,48 L22,30 L45,38 Z" fill="%23f1c40f"/></svg>';
+    const imgMineUnder = new Image(); imgMineUnder.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><ellipse cx="50" cy="75" rx="30" ry="15" fill="%23795548"/><circle cx="50" cy="50" r="12" fill="%239e9e9e"/><rect x="47" y="25" width="6" height="25" fill="%23e74c3c"/></svg>';
+    const imgMineReady = new Image(); imgMineReady.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><ellipse cx="50" cy="75" rx="32" ry="16" fill="%23795548"/><ellipse cx="50" cy="52" rx="22" ry="26" fill="%23d35400"/><circle cx="50" cy="24" r="8" fill="%232ecc71"/><circle cx="44" cy="46" r="2" fill="%23000"/><circle cx="56" cy="46" r="2" fill="%23000"/></svg>';
 
-    let isSunFileImgLoaded = false; imgSunFile.onload = () => isSunFileImgLoaded = true;
-    let isPeashooterImgLoaded = false; imgPeashooter.onload = () => isPeashooterImgLoaded = true;
-    let isSunflowerImgLoaded = false; imgSunflower.onload = () => isSunflowerImgLoaded = true;
-    let isZombieImgLoaded = false; imgZombie.onload = () => isZombieImgLoaded = true;
-    let isZombieBucketLoaded = false; imgZombieBucket.onload = () => isZombieBucketLoaded = true;
-    let isZombieConeLoaded = false; imgZombieCone.onload = () => isZombieConeLoaded = true;
-    let isWallnutImgLoaded = false; imgWallnut.onload = () => isWallnutImgLoaded = true;
-    let isCherryImgLoaded = false; imgCherry.onload = () => isCherryImgLoaded = true;
-    let isBoomImgLoaded = false; imgBoom.onload = () => isBoomImgLoaded = true;
-    let isMineUnderLoaded = false; imgMineUnder.onload = () => isMineUnderLoaded = true;
-    let isMineReadyLoaded = false; imgMineReady.onload = () => isMineReadyLoaded = true;
+    let isSunFileImgLoaded = true;
+    let isPeashooterImgLoaded = true;
+    let isSunflowerImgLoaded = true;
+    let isZombieImgLoaded = true;
+    let isZombieBucketLoaded = true;
+    let isZombieConeLoaded = true;
+    let isWallnutImgLoaded = true;
+    let isCherryImgLoaded = true;
+    let isBoomImgLoaded = true;
+    let isMineUnderLoaded = true;
+    let isMineReadyLoaded = true;
 
     // Сетка
     let cellWidth = 80; let cellHeight = 80; let spriteSize = 80; 
@@ -699,7 +692,7 @@
     let gameOver = false;
 
     let totalZombiesInWave = 0; let zombiesSpawnedSoFar = 0;
-    const START_DELAY = 60000; 
+    const START_DELAY = 20000; 
     let gameStartTime = 0; let lastZombieSpawnTime = 0;
     let zombieSpawnInterval = getRandomSpawnInterval();
     let lastSkySunSpawnTime = 0; let skySunSpawnInterval = getRandomSkySunInterval();
@@ -736,8 +729,8 @@
         }
     }
 
-    function getRandomSpawnInterval() { return Math.random() * (6000 - 4000) + 4000; }
-    function getRandomSkySunInterval() { return Math.random() * (20000 - 10000) + 10000; }
+    function getRandomSpawnInterval() { return Math.random() * (5000 - 3000) + 3000; }
+    function getRandomSkySunInterval() { return Math.random() * (15000 - 8000) + 8000; }
 
     function triggerCheatMassKill() {
         if (gameState !== 'playing' || gameOver || zombies.length <= 1 || isPaused) return;
@@ -766,7 +759,6 @@
         isPaused = true;
         savedPauseTime = Date.now();
         pauseScreen.style.display = 'flex';
-        audioPlay.pause();
     }
 
     function resumeGame() {
@@ -782,7 +774,6 @@
         }
         
         pauseScreen.style.display = 'none';
-        audioPlay.play().catch(err => console.log(err));
     }
 
     class Plant {
@@ -791,12 +782,12 @@
             this.lastActionTime = Date.now();
             this.birthTime = Date.now(); 
             
-            if (type === 'peashooter') { this.actionInterval = 4000; this.hp = 10000; }
-            else if (type === 'sunflower') { this.actionInterval = 10000; this.hp = 10000; }
+            if (type === 'peashooter') { this.actionInterval = 3000; this.hp = 10000; }
+            else if (type === 'sunflower') { this.actionInterval = 8000; this.hp = 10000; }
             else if (type === 'wallnut') { this.actionInterval = 0; this.hp = 50000; }
-            else if (type === 'cherrybomb') { this.actionInterval = 3000; this.hp = 999999; }
+            else if (type === 'cherrybomb') { this.actionInterval = 2000; this.hp = 999999; }
             else if (type === 'potatomine') { 
-                this.actionInterval = 15000; 
+                this.actionInterval = 10000; 
                 this.hp = 500;              
                 this.isReady = false;        
             }
@@ -905,13 +896,13 @@
     class Zombie {
         constructor(r, type = 'normal') {
             this.r = r; this.x = canvas.width; 
-            this.speed = cellWidth / 6000; 
+            this.speed = cellWidth / 7000; 
             this.isEating = false;
             this.type = type;
 
-            if (this.type === 'bucket') { this.hp = 15; } 
-            else if (this.type === 'cone') { this.hp = 10; } 
-            else { this.hp = 5; }
+            if (this.type === 'bucket') { this.hp = 12; } 
+            else if (this.type === 'cone') { this.hp = 8; } 
+            else { this.hp = 4; }
         }
         update(now, deltaTime) {
             if (isPaused) return;
@@ -940,7 +931,7 @@
 
                     this.isEating = true;
                     plantAhead.hp -= deltaTime; 
-                    if (plantAhead.hp <= 0) { grid[r][nextCellC] = null; this.isEating = false; }
+                    if (plantAhead.hp <= 0) { grid[this.r][nextCellC] = null; this.isEating = false; }
                     return; 
                 }
             }
@@ -968,7 +959,7 @@
     }
 
     class Pea {
-        constructor(x, y, r) { this.x = x; this.y = y; this.r = r; this.speed = cellWidth * 0.003; }
+        constructor(x, y, r) { this.x = x; this.y = y; this.r = r; this.speed = cellWidth * 0.004; }
         update(deltaTime) {
             if (isPaused) return false;
             this.x += this.speed * deltaTime;
@@ -978,7 +969,7 @@
                 if (z.r === this.r && this.x >= zCenterX - spriteSize/2 && this.x <= zCenterX + spriteSize/2) {
                     z.hp--; 
 
-                    if ((z.type === 'bucket' || z.type === 'cone') && z.hp <= 5) {
+                    if ((z.type === 'bucket' || z.type === 'cone') && z.hp <= 4) {
                         z.type = 'normal';
                     }
 
@@ -1006,7 +997,7 @@
             this.y = -this.radius;
             const targetRow = Math.floor(Math.random() * ROWS);
             this.targetY = targetRow * cellHeight + cellHeight / 2;
-            this.speed = 0.08; 
+            this.speed = 0.09; 
         }
         update(deltaTime) {
             if (isPaused) return;
@@ -1074,13 +1065,11 @@
             gameState = 'playing';
             resizeCanvas();
             restartGame();
-            playPlayMusic();
         } else {
             cheatKillBtn.style.display = 'block';
             fortuneScreen.style.display = 'flex';
             gameState = 'fortune';
             wheelAngle = 0; wheelSpeed = Math.random() * 0.3 + 0.4; isWheelSpinning = true;
-            playPlayMusic();
         }
     }
 
@@ -1141,7 +1130,7 @@
         mainMenuScreen.style.display = 'flex';
         isShovelActive = false; shovelBtn.classList.remove('active');
         gameState = 'menu'; initGrid(); zombies = []; peas = []; naturalSuns = []; explosions = [];
-        updateZombieCounterUI(); playMenuMusic();
+        updateZombieCounterUI();
     }
 
     function handleGameCanvasClick(clientX, clientY) {
@@ -1150,13 +1139,10 @@
         const clickX = clientX - rect.left;
         const clickY = clientY - rect.top;
 
-        // ЛОГИКА СБОРА НЕБЕСНЫХ СОЛНЫШЕК (Исправлено)
         for (let i = naturalSuns.length - 1; i >= 0; i--) {
             if (naturalSuns[i].checkClick(clickX, clickY)) {
-                sun += 25; 
-                naturalSuns.splice(i, 1); 
-                updateCardsUI();
-                return; // Выходим, чтобы клик не обрабатывался как копание лопатой
+                sun += 25; naturalSuns.splice(i, 1); updateCardsUI();
+                return;
             }
         }
 
@@ -1166,8 +1152,6 @@
             if (r >= 0 && r < ROWS && c >= 0 && c < COLS) {
                 if (grid[r][c] !== null) {
                     grid[r][c] = null;
-                    audioLopata.currentTime = 0;
-                    audioLopata.play().catch(err => console.log(err));
                 }
             }
             isShovelActive = false;
@@ -1184,8 +1168,6 @@
         shovelBtn.classList.remove('active');
 
         if (Date.now() < plantCooldownsEnd[type]) {
-            audioCooldownNotReady.currentTime = 0;
-            audioCooldownNotReady.play().catch(err => console.log(err));
             return;
         }
 
@@ -1224,9 +1206,6 @@
                     sun -= cost;
                     grid[r][c] = new Plant(draggingPlantType, r, c);
                     plantCooldownsEnd[draggingPlantType] = Date.now() + plantCooldownsMax[draggingPlantType];
-
-                    audioPosadka.currentTime = 0;
-                    audioPosadka.play().catch(err => console.log(err));
                 }
             }
         }
@@ -1299,6 +1278,20 @@
         }
     }
 
+    function drawExplosions(now) {
+        ctx.save();
+        for (let i = explosions.length - 1; i >= 0; i--) {
+            let exp = explosions[i];
+            if (now > exp.endTime) { explosions.splice(i, 1); continue; }
+            if (isBoomImgLoaded) { ctx.drawImage(imgBoom, exp.x, exp.y, exp.w, exp.h); } 
+            else {
+                let timeLeft = exp.endTime - now; ctx.globalAlpha = timeLeft / 500; 
+                ctx.fillStyle = 'rgba(231, 76, 60, 0.7)'; ctx.fillRect(exp.x, exp.y, exp.w, exp.h);
+            }
+        }
+        ctx.restore();
+    }
+
     function endGame() { gameOver = true; gameOverScreen.style.display = 'flex'; }
 
     function restartGame() {
@@ -1312,11 +1305,11 @@
         gameOverScreen.style.display = 'none'; victoryScreen.style.display = 'none';
 
         const now = Date.now();
-        plantCooldownsEnd.sunflower = now + 2000;
-        plantCooldownsEnd.peashooter = now + 3000;
-        plantCooldownsEnd.wallnut = now + 4000;
-        plantCooldownsEnd.cherrybomb = now + 6000;
-        plantCooldownsEnd.potatomine = now + 4000;
+        plantCooldownsEnd.sunflower = now + 1000;
+        plantCooldownsEnd.peashooter = now + 2000;
+        plantCooldownsEnd.wallnut = now + 3000;
+        plantCooldownsEnd.cherrybomb = now + 5000;
+        plantCooldownsEnd.potatomine = now + 3000;
 
         updateCardsUI(); updateZombieCounterUI();
     }
@@ -1339,8 +1332,8 @@
                 if ((isInfiniteMode || zombiesSpawnedSoFar < totalZombiesInWave) && (now - lastZombieSpawnTime >= zombieSpawnInterval)) {
                     let rand = Math.random();
                     let zombieType = 'normal';
-                    if (rand < 0.2) { zombieType = 'bucket'; } 
-                    else if (rand < 0.5) { zombieType = 'cone'; }
+                    if (rand < 0.25) { zombieType = 'bucket'; } 
+                    else if (rand < 0.55) { zombieType = 'cone'; }
                     
                     zombies.push(new Zombie(Math.floor(Math.random() * ROWS), zombieType));
                     zombiesSpawnedSoFar++; 
@@ -1379,8 +1372,7 @@
             ctx.save();
             for (let i = explosions.length - 1; i >= 0; i--) {
                 let exp = explosions[i];
-                // ИСПРАВЛЕНИЕ: Продлеваем время окончания взрыва, если игра была на паузе
-                if (isPaused) { exp.endTime += (Date.now() - lastTime); } 
+                if (isPaused) exp.endTime += deltaTime; 
                 if (now > exp.endTime) { explosions.splice(i, 1); continue; }
                 if (isBoomImgLoaded) { ctx.drawImage(imgBoom, exp.x, exp.y, exp.w, exp.h); } 
                 else {
@@ -1396,7 +1388,7 @@
                     let timeLeft = Math.ceil((START_DELAY - timePassed) / 1000);
                     ctx.save(); ctx.fillStyle = 'rgba(0, 0, 0, 0.6)'; ctx.fillRect(10, 10, 280, 35);
                     ctx.fillStyle = '#2ecc71'; ctx.font = 'bold 16px Arial';
-                    ctx.fillText(`Напанение через: ${timeLeft} сек`, 20, 32); ctx.restore();
+                    ctx.fillText(`Нападение через: ${timeLeft} сек`, 20, 32); ctx.restore();
                 }
             }
 
